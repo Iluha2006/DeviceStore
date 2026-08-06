@@ -1,0 +1,34 @@
+{
+"id":"/",
+"name": "Laravel PWA",
+"short_name": "LPT",
+"background_color": "#6777ef",
+"display": "standalone",
+"description": "A Progressive Web Application setup for Laravel projects.",
+"theme_color": "#6777ef",
+"start_url": "/",
+"icons": [
+    {
+        "src": "store.png",
+        "sizes": "512x512",
+        "type": "image/png"
+
+    }
+],
+"screenshots": [
+    {
+        "src": "store.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "form_factor": "wide"
+
+    },
+    {
+        "src": "shopping_7704642.png",
+        "sizes": "320x320",
+        "type": "image/png",
+        "form_factor": "narrow"
+
+    }
+]
+}
