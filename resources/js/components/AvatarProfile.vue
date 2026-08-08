@@ -7,28 +7,39 @@
         @change="handleFileUpload"
         style="display: none"
       >
-      <div class="avatar-preview" @click="triggerFileInput">
+      <div class="avatar-preview" @click="triggerFileInput" title="Изменить фото">
         <img v-if="avatarUrl" :src="avatarUrl" class="preview-image">
         <img v-else :src="defaultAvatar" class="preview-image">
+        <div class="avatar-overlay">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+          </svg>
+          Изменить
+        </div>
       </div>
+      <span class="avatar-hint">Нажмите на фото, чтобы загрузить новое</span>
     </div>
   </template>
 
   <script setup>
-  import { ref, computed, onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useUserStore } from '../Store/user';
 
   const userStore = useUserStore();
   const fileInput = ref(null);
-  const defaultAvatar = 'https://avatars.mds.yandex.net/i?id=1fec8837c92eca6c1175ac4c8e6d56383e5d7956-5603780-images-thumbs&n=13';
+  const defaultAvatar = '/images/default-avatar.png';
 
 
-  const avatarUrl = computed(() => {
-    if (!userStore.user?.id) return defaultAvatar;
+  const avatarUrl = ref(defaultAvatar);
+
+  const loadAvatar = () => {
+    if (!userStore.user?.id) return;
 
     const savedAvatar = localStorage.getItem(`avatar_${userStore.user.id}`);
-    return savedAvatar || defaultAvatar;
-  });
+    avatarUrl.value = savedAvatar || defaultAvatar;
+  };
+
+  onMounted(loadAvatar);
 
   const triggerFileInput = () => {
     fileInput.value.click();
@@ -52,7 +63,8 @@
     reader.onload = (e) => {
 
       if (userStore.user?.id) {
-        localStorage.setItem(`user_avatar_ ${userStore.user.id}`, e.target.result);
+        localStorage.setItem(`avatar_${userStore.user.id}`, e.target.result);
+        avatarUrl.value = e.target.result;
       }
     };
     reader.readAsDataURL(file);
@@ -63,18 +75,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
-    margin: 20px 0;
+    gap: var(--dm-space-3);
   }
 
   .avatar-preview {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     cursor: pointer;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--dm-shadow-md);
+    border: 3px solid var(--dm-primary-soft);
+    transition: border-color 0.2s ease;
+  }
+
+  .avatar-preview:hover {
+    border-color: var(--dm-primary);
   }
 
   .preview-image {
@@ -83,35 +100,29 @@
     object-fit: cover;
   }
 
-  .actions {
+  .avatar-overlay {
+    position: absolute;
+    inset: 0;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: var(--dm-text-xs);
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(20, 22, 26, 0.55);
+    opacity: 0;
+    transition: opacity 0.2s ease;
   }
 
-  .select-button,
-  .delete-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  .avatar-preview:hover .avatar-overlay {
+    opacity: 1;
   }
 
-  .select-button {
-    background-color: #42b983;
-    color: white;
-  }
-
-  .select-button:hover {
-    background-color: #369f6e;
-  }
-
-  .delete-btn {
-    background-color: #e53e3e;
-    color: white;
-  }
-
-  .delete-btn:hover {
-    background-color: #c53030;
+  .avatar-hint {
+    font-size: var(--dm-text-xs);
+    color: var(--dm-text-muted);
+    text-align: center;
   }
   </style>

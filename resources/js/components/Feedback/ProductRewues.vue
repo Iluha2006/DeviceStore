@@ -1,102 +1,180 @@
 <template>
-    <div class="reviews-container" :class="{ 'modal-mode': isModal }">
-      <div v-if="!isModal" class="add-review">
-        <h3>Оставить комментарий</h3>
+  <div class="reviews" :class="{ 'is-modal': isModal }">
+    <transition name="dm-fade">
+      <div v-if="toast" class="dm-toast">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14m.75-10.25v5.5a.75.75 0 0 1-1.5 0v-5.5a.75.75 0 0 1 1.5 0M8 11.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5"/>
+        </svg>
+        {{ toast }}
+      </div>
+    </transition>
+
+    <div v-if="error" class="dm-alert">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+      </svg>
+      {{ error }}
+    </div>
+
+    <div v-if="isLoading" class="dm-loading">
+      <span class="dm-spinner"></span>
+      Загрузка отзывов...
+    </div>
+
+    <template v-else>
+      <div class="dm-card add-review">
+        <div class="add-review-head">
+          <div class="review-head-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M6 3.5a1.5 1.5 0 0 1 5 0l.443 1.326a1.5 1.5 0 0 0 .94.94l1.327.443a1.5 1.5 0 0 1 0 2.832l-1.327.443a1.5 1.5 0 0 0-.94.94L11 12.5a1.5 1.5 0 0 1-5 0l-.443-1.326a1.5 1.5 0 0 0-.94-.94l-1.327-.443a1.5 1.5 0 0 1 0-2.832l1.327-.443a1.5 1.5 0 0 0 .94-.94z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="add-review-title">Оставить отзыв</h3>
+            <p class="add-review-sub">Поделитесь впечатлениями о товаре</p>
+          </div>
+        </div>
+
         <div class="rating-input" :class="{ 'error': errors.rating }">
-        <span>Оценка:</span>
-        <div class="stars-input">
-          <span
-            v-for="i in 5"
-            :key="i"
-            @click="newReview.rating = i; clearError('rating')"
-            :class="{'filled': i <= newReview.rating}"
-          >★</span>
+          <span class="rating-label">Ваша оценка:</span>
+          <div class="stars-input">
+            <span
+              v-for="i in 5"
+              :key="i"
+              @click="newReview.rating = i; clearError('rating')"
+              @mouseenter="hoverRating = i"
+              @mouseleave="hoverRating = 0"
+              :class="{ 'filled': i <= (hoverRating || newReview.rating) }"
+            >★</span>
+          </div>
+          <span class="field-error" v-if="errors.rating">{{ errors.rating }}</span>
         </div>
-        <span class="error-message" v-if="errors.rating">{{ errors.rating }}</span>
-      </div>
 
+        <div class="form-group">
+          <label for="review-pros">Достоинства</label>
+          <textarea
+            id="review-pros"
+            v-model="newReview.pros"
+            @input="clearError('pros')"
+            :class="{ 'error': errors.pros }"
+            placeholder="Что вам понравилось?"
+            rows="3"
+          ></textarea>
+          <span class="field-error" v-if="errors.pros">{{ errors.pros }}</span>
+        </div>
 
-      <div class="form-group">
-        <label>Достоинства:</label>
-        <textarea
-          v-model="newReview.pros"
-          @input="clearError('pros')"
-          :class="{ 'error': errors.pros }"
-          placeholder="Что вам понравилось?"
-        ></textarea>
-        <span class="error-message" v-if="errors.pros">{{ errors.pros }}</span>
-      </div>
+        <div class="form-group">
+          <label for="review-cons">Недостатки</label>
+          <textarea
+            id="review-cons"
+            v-model="newReview.cons"
+            @input="clearError('cons')"
+            :class="{ 'error': errors.cons }"
+            placeholder="Что можно улучшить?"
+            rows="3"
+          ></textarea>
+          <span class="field-error" v-if="errors.cons">{{ errors.cons }}</span>
+        </div>
 
-      <div class="form-group">
-        <label>Недостатки:</label>
-        <textarea
-          v-model="newReview.cons"
-          @input="clearError('cons')"
-          :class="{ 'error': errors.cons }"
-          placeholder="Что можно улучшить?"
-        ></textarea>
-        <span class="error-message" v-if="errors.cons">{{ errors.cons }}</span>
-      </div>
+        <div class="form-group">
+          <label for="review-comment">Комментарий</label>
+          <textarea
+            id="review-comment"
+            v-model="newReview.comment"
+            @input="clearError('comment')"
+            :class="{ 'error': errors.comment }"
+            placeholder="Ваш комментарий"
+            rows="4"
+          ></textarea>
+          <span class="field-error" v-if="errors.comment">{{ errors.comment }}</span>
+        </div>
 
-
-      <div class="form-group">
-        <label>Комментарий:</label>
-        <textarea
-          v-model="newReview.comment"
-          @input="clearError('comment')"
-          :class="{ 'error': errors.comment }"
-          placeholder="Ваш комментарий"
-        ></textarea>
-        <span class="error-message" v-if="errors.comment">{{ errors.comment }}</span>
-      </div>
-
-      <button @click="submitReview" class="submit-btn">Отправить отзыв</button>
-    </div>
-
-      <div class="reviews-list">
         <button
-
-          @click="isModal = true"
-          class="view-all-comments-btn"
+          @click="submitReview"
+          class="dm-btn dm-btn-primary dm-btn-block"
+          :disabled="submitting"
         >
-          Посмотреть все комментарии
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l7.528-7.288-5.337 13.34z"/>
+          </svg>
+          {{ submitting ? 'Отправка...' : 'Отправить отзыв' }}
         </button>
-        <div v-for="review in  reviews" :key="review.id" class="review-item">
-            <div class="review-author">
-            {{ review.user.name }}
+      </div>
+
+      <div class="reviews-section">
+        <div class="reviews-head">
+          <h3 class="reviews-title">Отзывы покупателей</h3>
+          <span class="dm-count-badge">{{ reviews.length }}</span>
+        </div>
+
+        <div v-if="reviews.length === 0" class="dm-empty no-reviews">
+          <div class="dm-empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M6 3.5a1.5 1.5 0 0 1 5 0l.443 1.326a1.5 1.5 0 0 0 .94.94l1.327.443a1.5 1.5 0 0 1 0 2.832l-1.327.443a1.5 1.5 0 0 0-.94.94L11 12.5a1.5 1.5 0 0 1-5 0l-.443-1.326a1.5 1.5 0 0 0-.94-.94l-1.327-.443a1.5 1.5 0 0 1 0-2.832l1.327-.443a1.5 1.5 0 0 0 .94-.94z"/>
+            </svg>
           </div>
-          <div class="review-content">
-            <div v-if="review.pros " class="review-pros">
-              <strong>Достоинства:</strong> {{ review.pros }}
+          <h2>Отзывов пока нет</h2>
+          <p>Будьте первым, кто поделится впечатлениями о товаре.</p>
+        </div>
 
+        <div class="reviews-list">
+          <div v-for="review in reviews" :key="review.id" class="dm-card review-item">
+            <div class="review-item-head">
+              <div class="review-author">
+                <div class="review-avatar">{{ initials(review.user?.name) }}</div>
+                <div>
+                  <strong>{{ review.user?.name }}</strong>
+                  <span class="review-date">{{ formatDate(review.created_at) }}</span>
+                </div>
+              </div>
+              <div class="review-stars">
+                <span v-for="i in 5" :key="i" :class="{ 'filled': i <= review.rating }">★</span>
+              </div>
             </div>
 
-            <div v-if="review.cons " class="review-cons">
-              <strong>Недостатки:</strong> {{ review.cons }}
-              <span class="error-message" v-if="errors.cons">{{ errors.cons }}</span>
-            </div>
-
-            <div v-if="review.comment" class="review-comment">
-              {{ review.comment }}
+            <div class="review-content">
+              <div v-if="review.pros" class="review-pros">
+                <span class="review-tag success">Достоинства</span>
+                <p>{{ review.pros }}</p>
+              </div>
+              <div v-if="review.cons" class="review-cons">
+                <span class="review-tag danger">Недостатки</span>
+                <p>{{ review.cons }}</p>
+              </div>
+              <div v-if="review.comment" class="review-comment">
+                <p>{{ review.comment }}</p>
+              </div>
             </div>
           </div>
-
-
         </div>
       </div>
-    </div>
-  </template>
+    </template>
+  </div>
+</template>
 
 <script setup>
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useUserStore } from '@/Store/user';
 
 const userStore = useUserStore();
-const isModal = ref(false);
 const isLoading = ref(false);
+const submitting = ref(false);
 const error = ref(null);
 const errors = ref({});
+const toast = ref('');
+const hoverRating = ref(0);
+
+const props = defineProps({
+  productId: {
+    type: Number,
+    required: true
+  },
+  isModal: {
+    type: Boolean,
+    default: false
+  }
+});
 
 const newReview = ref({
   rating: 0,
@@ -105,14 +183,17 @@ const newReview = ref({
   comment: ''
 });
 
-const props = defineProps({
-  productId: {
-    type: Number,
-    required: true
-  }
-});
-
 const reviews = ref([]);
+
+const showToast = (msg) => {
+  toast.value = msg;
+  setTimeout(() => (toast.value = ''), 2200);
+};
+
+const initials = (name = '') => {
+  const parts = String(name).trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0, 2).map(p => p[0]?.toUpperCase() || '').join('');
+};
 
 const clearError = (field) => {
   if (errors.value[field]) {
@@ -155,14 +236,13 @@ const fetchReviews = async () => {
       withCredentials: true,
       headers: {
         'Accept': 'application/json',
-        'Authorization': `Bearer ${userStore.token}`,
         'Content-Type': 'application/json'
       }
     });
     reviews.value = response.data;
   } catch (err) {
     console.error('Error fetching reviews:', err);
-    error.value = 'Не удалось загрузить комментарии';
+    error.value = 'Не удалось загрузить отзывы';
     reviews.value = [];
   } finally {
     isLoading.value = false;
@@ -173,12 +253,14 @@ const submitReview = async () => {
   if (!validateForm()) {
     return;
   }
-  try {
-    if (!userStore.isAuthenticated) {
-      alert('Для добавления комментария необходимо авторизоваться');
-      return;
-    }
 
+  if (!userStore.isAuthenticated) {
+    showToast('Войдите, чтобы оставить отзыв');
+    return;
+  }
+
+  try {
+    submitting.value = true;
     await axios.post(
       `/api/products/${props.productId}/reviews`,
       newReview.value,
@@ -195,302 +277,298 @@ const submitReview = async () => {
     await fetchReviews();
     newReview.value = { rating: 0, pros: '', cons: '', comment: '' };
     errors.value = {};
+    error.value = null;
+    showToast('Спасибо! Отзыв успешно отправлен');
   } catch (err) {
     if (err.response?.data?.errors) {
       errors.value = err.response.data.errors;
+    } else if (err.response?.status === 401) {
+      showToast('Сессия истекла. Войдите снова');
     } else {
-      alert('Ошибка при отправке отзыва: ' + (err.response?.data?.message || err.message));
+      showToast(err.response?.data?.message || 'Ошибка при отправке отзыва');
     }
+  } finally {
+    submitting.value = false;
   }
 };
 
 const formatDate = (dateString) => {
   if (!dateString) return '';
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('ru-RU', options);
+  return new Date(dateString).toLocaleDateString('ru-RU', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
 };
 
 onMounted(() => {
   fetchReviews();
 });
 </script>
+
 <style scoped>
-.error-message {
-  color: #ff4444;
-  font-size: 20px;
-  margin-top: 5px;
-  display: block;
-}
-
-
-.reviews-container {
-  margin-top: 40px;
-  padding: 20px;
-  border-top: 1px solid #eee;
-}
-
-.reviews-container.modal-mode {
-  padding: 0;
-  border: none;
-  margin-top: 0;
-}
-
-.rating-summary {
-  display: flex;
-  gap: 40px;
-  margin-bottom: 30px;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-}
-
-.average-rating {
+.reviews {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-width: 150px;
+  gap: var(--dm-space-6);
 }
 
-.rating-value {
-  font-size: 2.5rem;
-  font-weight: bold;
+/* ---- Форма ---- */
+.add-review {
+  padding: var(--dm-space-6);
 }
 
-.stars {
-  font-size: 1.5rem;
-  color: #ccc;
-  margin: 5px 0;
-}
-
-.stars .filled,
-.stars-input .filled {
-  color: #ffc107;
-}
-
-.total-reviews {
-  color: #666;
-}
-
-.rating-distribution {
-  flex-grow: 1;
-}
-
-.rating-bar {
+.add-review-head {
   display: flex;
   align-items: center;
-  margin: 5px 0;
+  gap: var(--dm-space-3);
+  margin-bottom: var(--dm-space-5);
 }
 
-.star-count {
-  width: 40px;
+.review-head-icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--dm-radius-md);
+  background: var(--dm-primary-soft);
+  color: var(--dm-primary);
 }
 
-.bar-container {
-  flex-grow: 1;
-  height: 10px;
-  background: #eee;
-  margin: 0 10px;
-  border-radius: 5px;
-  overflow: hidden;
+.add-review-title {
+  margin: 0;
+  font-size: var(--dm-text-lg);
+  font-weight: 700;
+  color: var(--dm-text);
 }
 
-.bar {
-  height: 100%;
-  background: #ffc107;
-}
-
-.percentage {
-  width: 40px;
-  text-align: right;
-}
-
-.add-review {
-  padding: 20px;
-  margin-bottom: 30px;
-  background: #f9f9f9;
-  border-radius: 8px;
+.add-review-sub {
+  margin: 2px 0 0;
+  font-size: var(--dm-text-sm);
+  color: var(--dm-text-muted);
 }
 
 .rating-input {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  gap: var(--dm-space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--dm-space-4);
+}
+
+.rating-input.error {
+  align-items: flex-start;
+}
+
+.rating-label {
+  font-size: var(--dm-text-base);
+  font-weight: 600;
+  color: var(--dm-text);
 }
 
 .stars-input {
-  font-size: 1.5rem;
-  color: #ccc;
-  margin-left: 10px;
+  display: inline-flex;
+  gap: 2px;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--dm-border-strong);
   cursor: pointer;
+  user-select: none;
+}
+
+.stars-input span {
+  transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.stars-input span:hover {
+  transform: scale(1.15);
+}
+
+.stars-input .filled {
+  color: var(--dm-warning);
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: var(--dm-space-4);
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: var(--dm-space-2);
+  font-size: var(--dm-text-base);
+  font-weight: 600;
+  color: var(--dm-text);
 }
 
 .form-group textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  min-height: 80px;
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: var(--dm-text-base);
+  color: var(--dm-text);
+  background: var(--dm-surface-muted);
+  border: 1px solid var(--dm-border-strong);
+  border-radius: var(--dm-radius-md);
+  resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-.submit-btn {
-  padding: 10px 20px;
-  background: #000;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.form-group textarea:focus {
+  outline: none;
+  background: var(--dm-surface);
+  border-color: var(--dm-primary);
+  box-shadow: var(--dm-focus-ring);
+}
+
+.form-group textarea.error,
+.rating-input.error .stars-input {
+  border-color: var(--dm-danger);
+  color: var(--dm-danger);
+}
+
+.field-error {
+  display: block;
+  margin-top: var(--dm-space-1);
+  font-size: var(--dm-text-xs);
+  color: var(--dm-danger);
+}
+
+/* ---- Список отзывов ---- */
+.reviews-head {
+  display: flex;
+  align-items: center;
+  gap: var(--dm-space-3);
+  margin-bottom: var(--dm-space-4);
+}
+
+.reviews-title {
+  margin: 0;
+  font-size: var(--dm-text-xl);
+  font-weight: 800;
+  color: var(--dm-text);
 }
 
 .reviews-list {
-  margin-top: 20px;
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dm-space-4);
 }
 
 .review-item {
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  padding: var(--dm-space-5);
 }
 
-.review-header {
+.review-item-head {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  align-items: flex-start;
+  gap: var(--dm-space-4);
+  margin-bottom: var(--dm-space-4);
+  padding-bottom: var(--dm-space-4);
+  border-bottom: 1px solid var(--dm-border);
 }
 
-.review-rating {
-  font-size: 1.2rem;
-  color: #ffc107;
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: var(--dm-space-3);
+}
+
+.review-author strong {
+  display: block;
+  font-size: var(--dm-text-md);
+  font-weight: 700;
+  color: var(--dm-text);
+}
+
+.review-avatar {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--dm-primary-soft);
+  color: var(--dm-primary);
+  font-size: var(--dm-text-md);
+  font-weight: 800;
 }
 
 .review-date {
-  color: #666;
+  font-size: var(--dm-text-xs);
+  color: var(--dm-text-muted);
+}
+
+.review-stars {
+  font-size: var(--dm-text-lg);
+  color: var(--dm-border-strong);
+  letter-spacing: 2px;
+}
+
+.review-stars .filled {
+  color: var(--dm-warning);
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dm-space-3);
 }
 
 .review-pros,
 .review-cons {
-  margin-bottom: 10px;
-}
-
-.review-comment {
-  margin: 10px 0;
-  line-height: 1.5;
-}
-
-.review-author {
-  margin-top: 10px;
-  font-style: italic;
-  color: #666;
-}
-
-.view-all-comments-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
-  color: #333;
-  font-weight: bold;
-}
-
-.view-all-comments-btn:hover {
-  background: #eee;
-}
-
-.close-modal-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px 20px;
-  background: #000;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 1000;
-}
-.modal-mode .reviews-list {
-  max-height: calc(100vh - 60px);
-}
-
-.modal-mode .review-item {
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-.modal-mode .review-header {
+  display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
 }
 
-.modal-mode .review-date {
-  font-size: 0.9rem;
+.review-tag {
+  align-self: flex-start;
+  padding: 2px 10px;
+  font-size: var(--dm-text-xs);
+  font-weight: 700;
+  border-radius: var(--dm-radius-full);
 }
 
-.modal-mode .review-content {
-  margin-top: 10px;
+.review-tag.success {
+  color: var(--dm-success);
+  background: var(--dm-success-soft);
 }
 
-.modal-mode .review-comment {
-  font-size: 1rem;
-  margin: 5px 0;
+.review-tag.danger {
+  color: var(--dm-danger);
+  background: var(--dm-danger-soft);
 }
 
-.modal-mode .review-author {
-  font-size: 0.9rem;
-  margin-top: 5px;
+.review-pros p,
+.review-cons p,
+.review-comment p {
+  margin: 0;
+  font-size: var(--dm-text-base);
+  line-height: 1.6;
+  color: var(--dm-text);
 }
 
-@media (max-width: 480px) {
-  .reviews-container {
-    padding: 8px;
-  }
-
-  .form-group textarea {
-    min-height: 60px;
-    padding: 8px;
-  }
-
-  .submit-btn {
-    font-size: 0.9rem;
-  }
-
-  .review-content div {
-    font-size: 0.95rem;
-  }
-
-  .review-author {
-    font-size: 0.85rem;
-  }
+.no-reviews {
+  padding: var(--dm-space-10) var(--dm-space-6);
 }
 
-@media (max-width: 360px) {
-  .stars, .stars-input {
-    font-size: 1.1rem;
-  }
+/* ---- Модальный режим ---- */
+.is-modal .add-review {
+  box-shadow: none;
+  padding: var(--dm-space-5);
+  margin-bottom: var(--dm-space-4);
+}
 
-  .review-rating {
-    font-size: 1rem;
-  }
+.dm-fade-enter-active,
+.dm-fade-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
 
-  .review-date {
-    font-size: 0.8rem;
-  }
+.dm-fade-enter-from,
+.dm-fade-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -8px);
 }
 </style>

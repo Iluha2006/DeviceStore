@@ -9,3 +9,613 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* ==========================================================================
+   DISIN MD — дизайн-система интернет-магазина DeviceStore
+   Токены: цвета, отступы, радиусы, тени, типографика, z-index
+   ========================================================================== */
+:root {
+    /* ---- Цветовая палитра ---- */
+    --dm-primary: #4f46e5;
+    --dm-primary-hover: #4338ca;
+    --dm-primary-active: #3730a3;
+    --dm-primary-soft: #eef2ff;
+    --dm-accent: #7c3aed;
+
+    --dm-bg: #f5f6f8;
+    --dm-surface: #ffffff;
+    --dm-surface-muted: #f9fafb;
+
+    --dm-border: #e6e8ec;
+    --dm-border-strong: #d3d7de;
+
+    --dm-text: #14161a;
+    --dm-text-secondary: #5b6270;
+    --dm-text-muted: #9aa1ad;
+
+    --dm-success: #16a34a;
+    --dm-success-soft: #e9f9ef;
+    --dm-danger: #dc2626;
+    --dm-danger-soft: #fdecec;
+    --dm-warning: #d97706;
+    --dm-warning-soft: #fdf3e3;
+
+    --dm-focus-ring: 0 0 0 3px rgba(79, 70, 229, 0.18);
+
+    /* ---- Отступы (сетка 4px) ---- */
+    --dm-space-1: 4px;
+    --dm-space-2: 8px;
+    --dm-space-3: 12px;
+    --dm-space-4: 16px;
+    --dm-space-5: 20px;
+    --dm-space-6: 24px;
+    --dm-space-8: 32px;
+    --dm-space-10: 40px;
+    --dm-space-12: 48px;
+    --dm-space-16: 64px;
+
+    /* ---- Радиусы ---- */
+    --dm-radius-sm: 6px;
+    --dm-radius-md: 10px;
+    --dm-radius-lg: 16px;
+    --dm-radius-xl: 22px;
+    --dm-radius-full: 999px;
+
+    /* ---- Тени ---- */
+    --dm-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+    --dm-shadow-md: 0 4px 14px rgba(16, 24, 40, 0.08);
+    --dm-shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.12);
+
+    /* ---- Типографика ---- */
+    --dm-font: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Segoe UI', Roboto, Arial;
+    --dm-text-xs: 12px;
+    --dm-text-sm: 13px;
+    --dm-text-base: 14px;
+    --dm-text-md: 15px;
+    --dm-text-lg: 17px;
+    --dm-text-xl: 20px;
+    --dm-text-2xl: 24px;
+    --dm-text-3xl: 30px;
+
+    /* ---- Макет ---- */
+    --dm-header-height: 68px;
+    --dm-content-width: 1200px;
+    --dm-z-header: 900;
+    --dm-z-modal: 1000;
+    --dm-z-toast: 2000;
+}
+
+body {
+    font-family: var(--dm-font);
+    background-color: var(--dm-bg);
+    color: var(--dm-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   DISIN MD — компоненты
+   ========================================================================== */
+
+/* ---- Карточка ---- */
+.dm-card {
+    background: var(--dm-surface);
+  
+    box-shadow: var(--dm-shadow-sm);
+}
+
+/* ---- Заголовок страницы ---- */
+.dm-page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: var(--dm-space-6) var(--dm-space-4);
+}
+
+.dm-page-title {
+    display: flex;
+    align-items: center;
+    gap: var(--dm-space-3);
+    font-size: var(--dm-text-3xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--dm-space-6);
+}
+
+.dm-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 var(--dm-space-2);
+    font-size: var(--dm-text-sm);
+    font-weight: 700;
+    color: var(--dm-primary);
+    background: var(--dm-primary-soft);
+    border-radius: var(--dm-radius-full);
+}
+
+/* ---- Кнопки ---- */
+.dm-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--dm-space-2);
+    padding: 10px 18px;
+    font-size: var(--dm-text-base);
+    font-weight: 600;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: var(--dm-radius-md);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+    user-select: none;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.dm-btn:active {
+    transform: translateY(1px);
+}
+
+.dm-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--dm-focus-ring);
+}
+
+.dm-btn-primary {
+    background: var(--dm-primary);
+    color: #ffffff;
+}
+
+.dm-btn-primary:hover {
+    background: var(--dm-primary-hover);
+}
+
+.dm-btn-primary:disabled {
+    background: var(--dm-border-strong);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.dm-btn-secondary {
+    background: var(--dm-surface);
+    color: var(--dm-text);
+    border-color: var(--dm-border-strong);
+}
+
+.dm-btn-secondary:hover {
+    background: var(--dm-surface-muted);
+    border-color: var(--dm-text-muted);
+}
+
+.dm-btn-ghost {
+    background: transparent;
+    color: var(--dm-text-secondary);
+}
+
+.dm-btn-ghost:hover {
+    background: var(--dm-surface-muted);
+    color: var(--dm-text);
+}
+
+.dm-btn-danger {
+    background: var(--dm-surface);
+    color: var(--dm-danger);
+    border-color: var(--dm-danger-soft);
+}
+
+.dm-btn-danger:hover {
+    background: var(--dm-danger-soft);
+}
+
+.dm-btn-sm {
+    padding: 7px 12px;
+    font-size: var(--dm-text-sm);
+    border-radius: var(--dm-radius-sm);
+}
+
+.dm-btn-lg {
+    padding: 14px 24px;
+    font-size: var(--dm-text-md);
+    border-radius: var(--dm-radius-md);
+}
+
+.dm-btn-block {
+    width: 100%;
+}
+
+/* ---- Поле ввода / селект ---- */
+.dm-select {
+    padding: 9px 14px;
+    font-size: var(--dm-text-base);
+    font-family: inherit;
+    color: var(--dm-text);
+    background: var(--dm-surface);
+    border: 1px solid var(--dm-border-strong);
+    border-radius: var(--dm-radius-md);
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    appearance: none;
+}
+
+.dm-select:focus-visible {
+    outline: none;
+    border-color: var(--dm-primary);
+    box-shadow: var(--dm-focus-ring);
+}
+
+/* ---- Чекбокс ---- */
+.dm-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--dm-primary);
+    cursor: pointer;
+}
+
+/* ---- Степпер количества ---- */
+.dm-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--dm-border-strong);
+    border-radius: var(--dm-radius-md);
+    background: var(--dm-surface);
+    overflow: hidden;
+}
+
+.dm-stepper button {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: var(--dm-surface-muted);
+    color: var(--dm-text);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dm-stepper button:hover {
+    background: var(--dm-primary-soft);
+    color: var(--dm-primary);
+}
+
+.dm-stepper button:disabled {
+    color: var(--dm-text-muted);
+    cursor: not-allowed;
+    background: var(--dm-surface-muted);
+}
+
+.dm-stepper span {
+    min-width: 40px;
+    text-align: center;
+    font-weight: 700;
+    font-size: var(--dm-text-md);
+}
+
+/* ---- Бейдж ---- */
+.dm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dm-space-1);
+    padding: 3px 10px;
+    font-size: var(--dm-text-xs);
+    font-weight: 700;
+    border-radius: var(--dm-radius-full);
+    line-height: 1.4;
+}
+
+.dm-badge-success {
+    color: var(--dm-success);
+    background: var(--dm-success-soft);
+}
+
+.dm-badge-danger {
+    color: var(--dm-danger);
+    background: var(--dm-danger-soft);
+}
+
+.dm-badge-warning {
+    color: var(--dm-warning);
+    background: var(--dm-warning-soft);
+}
+
+.dm-badge-primary {
+    color: var(--dm-primary);
+    background: var(--dm-primary-soft);
+}
+
+/* ---- Тосты ---- */
+.dm-toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: var(--dm-space-2);
+    padding: 12px 20px;
+    font-size: var(--dm-text-base);
+    font-weight: 600;
+    color: #ffffff;
+    background: var(--dm-text);
+    border-radius: var(--dm-radius-md);
+    box-shadow: var(--dm-shadow-lg);
+    animation: dm-toast-in 0.25s ease;
+}
+
+@keyframes dm-toast-in {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -12px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* ---- Пустое состояние ---- */
+.dm-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--dm-space-4);
+    padding: var(--dm-space-16) var(--dm-space-6);
+    text-align: center;
+}
+
+.dm-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border-radius: var(--dm-radius-full);
+    background: var(--dm-primary-soft);
+    color: var(--dm-primary);
+}
+
+.dm-empty h2 {
+    margin: 0;
+    font-size: var(--dm-text-xl);
+    font-weight: 700;
+}
+
+.dm-empty p {
+    margin: 0;
+    color: var(--dm-text-secondary);
+    font-size: var(--dm-text-base);
+    max-width: 360px;
+}
+
+/* ---- Ошибка ---- */
+.dm-alert {
+    display: flex;
+    align-items: center;
+    gap: var(--dm-space-2);
+    padding: 12px 16px;
+    font-size: var(--dm-text-base);
+    font-weight: 500;
+    color: var(--dm-danger);
+    background: var(--dm-danger-soft);
+    border-radius: var(--dm-radius-md);
+    margin-bottom: var(--dm-space-4);
+}
+
+/* ---- Загрузка ---- */
+.dm-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--dm-space-3);
+    padding: var(--dm-space-12) 0;
+    color: var(--dm-text-muted);
+    font-size: var(--dm-text-md);
+}
+
+.dm-spinner {
+    width: 22px;
+    height: 22px;
+    border: 3px solid var(--dm-border);
+    border-top-color: var(--dm-primary);
+    border-radius: 50%;
+    animation: dm-spin 0.7s linear infinite;
+}
+
+@keyframes dm-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ---- Продвигаемые утилиты ---- */
+.dm-img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dm-img-contain {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.dm-muted {
+    color: var(--dm-text-muted);
+}
+
+/* ---- Иконка-кнопка ---- */
+.dm-icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: transparent;
+    color: var(--dm-text);
+    border-radius: var(--dm-radius-md);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.05s ease;
+}
+
+.dm-icon-btn:hover {
+    background: var(--dm-surface-muted);
+    color: var(--dm-primary);
+}
+
+.dm-icon-btn:active {
+    transform: scale(0.95);
+}
+
+.dm-icon-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--dm-focus-ring);
+}
+
+.dm-icon-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    background: var(--dm-danger);
+    border-radius: var(--dm-radius-full);
+    box-shadow: 0 0 0 2px var(--dm-surface);
+}
+
+/* ---- Ссылка навигации ---- */
+.dm-nav-link {
+    position: relative;
+    font-size: var(--dm-text-base);
+    font-weight: 600;
+    color: var(--dm-text-secondary);
+    text-decoration: none;
+    padding: 6px 2px;
+    transition: color 0.15s ease;
+}
+
+.dm-nav-link:hover {
+    color: var(--dm-primary);
+}
+
+.dm-nav-link.router-link-active {
+    color: var(--dm-primary);
+}
+
+/* ---- Заголовок секции ---- */
+.dm-section {
+    max-width: var(--dm-content-width);
+    margin: 0 auto;
+    padding: var(--dm-space-8) var(--dm-space-4);
+}
+
+.dm-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--dm-space-4);
+    margin-bottom: var(--dm-space-6);
+}
+
+.dm-section-title {
+    margin: 0;
+    font-size: var(--dm-text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--dm-text);
+}
+
+.dm-section-link {
+    font-size: var(--dm-text-base);
+    font-weight: 600;
+    color: var(--dm-primary);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.dm-section-link:hover {
+    color: var(--dm-primary-hover);
+    text-decoration: underline;
+}
+
+/* ---- Чип категории ---- */
+.dm-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dm-space-2);
+    padding: 10px 16px;
+    font-size: var(--dm-text-base);
+    font-weight: 600;
+    color: var(--dm-text-secondary);
+    background: var(--dm-surface);
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius-full);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+}
+
+.dm-chip:hover {
+    color: var(--dm-primary);
+    border-color: var(--dm-primary);
+    background: var(--dm-primary-soft);
+    box-shadow: var(--dm-shadow-sm);
+}
+
+/* ---- Логотип ---- */
+.dm-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--dm-space-3);
+    text-decoration: none;
+    color: var(--dm-text);
+}
+
+.dm-logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--dm-radius-md);
+    background: var(--dm-primary);
+    color: #ffffff;
+}
+
+.dm-logo-name {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.dm-logo-tagline {
+    font-size: var(--dm-text-xs);
+    color: var(--dm-text-muted);
+    font-weight: 500;
+}

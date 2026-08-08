@@ -141,25 +141,35 @@
   }
 
   .search-input {
-    width: 500px;
-    padding: 8px 30px 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 20px;
+    width: 100%;
+    padding: 10px 38px 10px 14px;
+    border: 1px solid var(--dm-border-strong);
+    border-radius: var(--dm-radius-md);
     outline: none;
-    transition: all 0.3s;
+    background: var(--dm-surface-muted);
+    font-family: inherit;
+    font-size: var(--dm-text-base);
+    color: var(--dm-text);
+    transition: all 0.15s ease;
   }
 
   .search-input:focus {
-    border-color: #ff6b6b;
-    box-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+    border-color: var(--dm-primary);
+    background: var(--dm-surface);
+    box-shadow: var(--dm-focus-ring);
+  }
+
+  .search-input::placeholder {
+    color: var(--dm-text-muted);
   }
 
   .bi-search {
     position: absolute;
-    right: 10px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
+    color: var(--dm-text-muted);
+    pointer-events: none;
   }
 
   .search-results {
@@ -167,36 +177,41 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    margin-top: 5px;
+    background: var(--dm-surface);
+    border: 1px solid var(--dm-border);
+    border-radius: var(--dm-radius-md);
+    box-shadow: var(--dm-shadow-lg);
+    z-index: var(--dm-z-modal);
+    margin-top: 6px;
     max-height: 400px;
     overflow-y: auto;
   }
 
   .search-result-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--dm-border);
+    transition: background-color 0.15s;
+  }
+
+  .search-result-item:last-child {
+    border-bottom: none;
   }
 
   .search-result-item:hover {
-    background-color: #f5f5f5;
+    background-color: var(--dm-surface-muted);
   }
 
   .result-link {
     display: block;
-    color: #333;
+    color: var(--dm-text);
     text-decoration: none;
   }
 
   .result-type {
-    font-weight: bold;
-    color: #666;
+    font-weight: 700;
+    color: var(--dm-primary);
     margin-right: 5px;
-    font-size: 0.9em;
+    font-size: var(--dm-text-xs);
+    text-transform: uppercase;
   }
   </style>

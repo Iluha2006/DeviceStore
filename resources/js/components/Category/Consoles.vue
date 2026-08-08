@@ -155,12 +155,13 @@ export default {
     }
     const fetchProductsWithRatings = async () => {
   try {
-
     const response = await axios.get('/api/products/ratings');
-    consoles.value = response.data.filter(product =>
-          product.name.includes('Консоль')
-        );
-
+    const ratingsMap = Object.fromEntries(response.data.map(p => [p.id, p]));
+    consoles.value = consoles.value.map(product => ({
+      ...product,
+      average_rating: ratingsMap[product.id]?.average_rating,
+      reviews_count: ratingsMap[product.id]?.reviews_count
+    }));
   } catch (error) {
     console.error('Error fetching products with ratings:', error);
   }

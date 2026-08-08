@@ -1,23 +1,150 @@
 <template>
-    <div>
-        <navbar-modal></navbar-modal>
+  <div class="home">
+    <section class="dm-section home-hero">
       <ImageSlider />
-      <product-card></product-card>
+    </section>
 
-    <Intsall/>
+    <section class="dm-section home-categories">
+      <div class="dm-section-head">
+        <h2 class="dm-section-title">Каталог</h2>
+        <router-link to="/" class="dm-section-link">Все категории →</router-link>
+      </div>
+      <div class="category-chips">
+        <router-link v-for="cat in categories" :key="cat.to" :to="cat.to" class="dm-chip">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path :d="cat.icon" />
+          </svg>
+          {{ cat.label }}
+        </router-link>
+      </div>
+    </section>
 
-    </div>
-  </template>
+    <section class="dm-section home-popular">
+      <div class="dm-section-head">
+        <h2 class="dm-section-title">Популярные товары</h2>
+        <router-link to="/" class="dm-section-link">Смотреть все →</router-link>
+      </div>
+      <ProductCard />
+    </section>
 
-  <script setup>
-  import { ref } from 'vue'
+    <section class="dm-section home-benefits">
+      <div class="benefits-grid">
+        <div class="dm-card benefit-card">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Бесплатная доставка</h3>
+            <p>При заказе от 10 000 ₽ — по всему городу за 1–3 дня.</p>
+          </div>
+        </div>
 
-  import ProductCard from './ProductCard.vue'
-  import ImageSlider from './Ainimation/ImageSlider.vue'
-   import NavbarModal from './Modal/NavbarModal.vue'
-  import Intsall from '../Install/Intsall.vue'
-  </script>
+        <div class="dm-card benefit-card">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.674.848.284.411.537.896.621 1.49a.775.775 0 0 1-1.545.059c-.041-.25-.135-.561-.294-.94-.341-.806-1.148-1.757-1.537-2.271L2.02 5.63C1.336 4.84 1 4.087 1 3.25 1 1.732 2.56 0 4.5 0c2.958 0 3.5 2.11 3.5 3.75 0 1.545-.64 2.243-1.265 2.894l-.2.214c-.25.27-.535.606-.535 1.142a.75.75 0 0 1-1.5 0c0-1.11.5-1.75 1.28-2.563.43-.45 1.22-1.275 1.22-1.687C6.5 3.07 6.157 1.5 4.5 1.5C3.58 1.5 2.5 2.56 2.5 3.25c0 .355.195.816.703 1.392l.124.145c.393.453.937 1.079 1.633 1.713a.75.75 0 1 1-.5 1.414c-.1-.036-.22-.083-.32-.133C4.394 7.6 4.428 7.77 4.38 8A.75.75 0 0 1 3 8c.045-.352.075-.703.075-1.053C3.075 6.18 2.93 6 2.618 5.625c-.14-.162-.414-.478-.643-.742C1.408 4.25 1.06 3.7 1.06 3.25c0-.65.406-1.738 1.44-2.05C3.167.83 3.9.84 4.5.84c.41 0 .75.096.75.66 0 .285-.09.565-.09.565-.125.37-.645.365-.975-.087C3.885 1.17 3.46 1 3.06 1c-.15 0-.29.01-.415.047C2.06 1.206 1.69 1.815 1.69 2.65c0 .522.28 1.048.67 1.5.15.176.35.405.53.633.205.262.4.57.54.87l.29-.9a.75.75 0 1 1 1.425.472L4.98 6.004a.75.75 0 0 1-1.37-.12L3.14 5.39c-.183-.465-.445-.813-.72-1.043C2.4 4.2 2.29 4.22 2.29 4.35c0 .53 1.036 1.38 1.356 1.57l.353.19a.75.75 0 0 1-.707 1.324l-.218-.117c-1.375-.738-2.784-2.272-2.784-3.397 0-.7.213-1.613 1.218-2.215C2.034 1.046 2.94 1 3.5 1c.566 0 1.066.163 1.442.475.246.205.558.777.558 1.025 0 .313-.12.61-.12.61z"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Гарантия 2 года</h3>
+            <p>Официальная гарантия на всю технику и расширенная поддержка.</p>
+          </div>
+        </div>
 
-  <style scoped>
+        <div class="dm-card benefit-card">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M7 4.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m-2 5.5a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0m-1.177.89a.75.75 0 0 0-1.06-1.061 3.5 3.5 0 0 0 0 4.95.75.75 0 0 0 1.06-1.061 2 2 0 0 1 0-2.828zm5.354-5.354a.75.75 0 0 1 0 1.061 2 2 0 0 1 0 2.828.75.75 0 1 1-1.06-1.061 3.5 3.5 0 0 0 0-4.95.75.75 0 0 1 1.06-1.06 3.5 3.5 0 0 1 0 4.95z"/>
+              <path d="M8 5a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-2.53 8.53a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M12 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-2.53 9.53a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0m-1.5 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m5.03 6.53a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5M13 4a.75.75 0 0 1-.53-.22l-.25-.25a.75.75 0 0 1 1.06-1.06l.25.25a.75.75 0 0 1 0 1.06A.75.75 0 0 1 13 4m3 4a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0M3 6a.75.75 0 0 1-.75.75.75.75 0 1 1 0-1.5A.75.75 0 0 1 3 6m7 7.5a.75.75 0 0 1 .75.75.75.75 0 1 1-1.5 0 .75.75 0 0 1 .75-.75M1.5 8a.75.75 0 0 1-.75.75.75.75 0 1 1 0-1.5.75.75 0 0 1 .75.75m11 7.5a.75.75 0 0 1-.53-.22l-.25-.25a.75.75 0 0 1 1.06-1.06l.25.25a.75.75 0 0 1 0 1.06.75.75 0 0 1-.53.22"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Поддержка 24/7</h3>
+            <p>Поможем с выбором и любыми вопросами в любой момент.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  </style>
+    <Intsall />
+  </div>
+</template>
+
+<script setup>
+import ProductCard from './ProductCard.vue'
+import ImageSlider from './Ainimation/ImageSlider.vue'
+import Intsall from '../Install/Intsall.vue'
+
+const categories = [
+  { label: 'Мониторы', to: '/monitors', icon: 'M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z' },
+  { label: 'Ноутбуки', to: '/laptops', icon: 'M2.5 1A1.5 1.5 0 0 0 1 2.5V11h14V2.5A1.5 1.5 0 0 0 13.5 1h-11zM14 12H2v-.5A1.5 1.5 0 0 0 .5 10V2.5A2.5 2.5 0 0 1 3 0h10a2.5 2.5 0 0 1 2.5 2.5V10a1.5 1.5 0 0 0-1.5 1.5V12zm-3 1.5v-.5H5v.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5z' },
+  { label: 'Телевизоры', to: '/televison', icon: 'M2.5 13.5A.5.5 0 0 1 3 13h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5M13.991 3l.024.001a1.5 1.5 0 0 1 .538.143.76.76 0 0 1 .302.254c.067.1.145.277.145.602v5.991l-.001.024a1.5 1.5 0 0 1-.143.538.76.76 0 0 1-.254.302c-.1.067-.277.145-.602.145H2.009l-.024-.001a1.5 1.5 0 0 1-.538-.143.76.76 0 0 1-.302-.254C1.078 10.502 1 10.325 1 10V4.009l.001-.024a1.5 1.5 0 0 1 .143-.538.76.76 0 0 1 .254-.302C1.498 3.078 1.675 3 2 3zM14 2H2C0 2 0 4 0 4v6c0 2 2 2 2 2h12c2 0 2-2 2-2V4c0-2-2-2-2-2' },
+  { label: 'Аудио', to: '/audio', icon: 'M9 13c0 1.105-1.12 2-2.5 2S4 14.105 4 13s1.12-2 2.5-2 2.5.895 2.5 2m0-9.75V13H8V3.25zM8 3.25a.75.75 0 0 1 .74-.75h.01c.2 0 .4.07.54.2l3 2.4c.13.1.21.25.21.4v1.5a.75.75 0 0 1-1.5 0V6l-2.5-2V13H8z' },
+  { label: 'Консоли', to: '/consoles', icon: 'M7.14 2.174c-.05.342-.07.686-.07 1.03v5.51c0 .39.31.71.71.71.11 0 .21-.03.31-.08l5.12-3.33c.74-.48 1.31-1.23 1.36-2.23.05-.95-.5-1.85-1.5-2.15-.45-.13-.91-.13-1.36 0l-4.57 1.34z' },
+  { label: 'Телефоны', to: '/phones', icon: 'M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2' },
+  { label: 'Сетевое', to: '/networkequipment', icon: 'M15.384 6.115a.485.485 0 0 0-.047-.736A12.44 12.44 0 0 0 8 3C5.259 3 2.723 3.882.663 5.379a.485.485 0 0 0-.048.736.52.52 0 0 0 .668.05A11.45 11.45 0 0 1 8 4c2.507 0 4.827.802 6.716 2.164.205.148.49.13.668-.049m-2.155 2.156a.482.482 0 0 0-.063-.745A9.46 9.46 0 0 0 8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065A8.46 8.46 0 0 1 8 7a8.46 8.46 0 0 1 4.576 1.336c.206.132.48.108.653-.065m-2.183 2.183c.226-.226.185-.605-.1-.75A6.5 6.5 0 0 0 8 9c-1.06 0-2.062.254-2.946.704-.285.145-.326.524-.1.75l.015.015c.16.16.407.19.611.09A5.5 5.5 0 0 1 8 10c.868 0 1.69.201 2.42.56.203.1.45.07.61-.091zM9.06 12.44c.196-.196.198-.52-.04-.66A2 2 0 0 0 8 11.5a2 2 0 0 0-1.02.28c-.238.14-.236.464-.04.66l.706.706a.5.5 0 0 0 .707 0l.707-.707z' }
+]
+</script>
+
+<style scoped>
+.home-hero {
+  padding-top: var(--dm-space-6);
+  padding-bottom: 0;
+}
+
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--dm-space-3);
+}
+
+.home-popular {
+  padding-top: var(--dm-space-6);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--dm-space-4);
+}
+
+.benefit-card {
+  display: flex;
+  gap: var(--dm-space-4);
+  padding: var(--dm-space-5);
+  align-items: flex-start;
+}
+
+.benefit-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--dm-radius-md);
+  background: var(--dm-primary-soft);
+  color: var(--dm-primary);
+}
+
+.benefit-card h3 {
+  margin: 0 0 4px;
+  font-size: var(--dm-text-lg);
+  font-weight: 700;
+}
+
+.benefit-card p {
+  margin: 0;
+  font-size: var(--dm-text-sm);
+  color: var(--dm-text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 860px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

@@ -83,13 +83,13 @@ export default {
     }
     const fetchProductsWithRatings = async () => {
   try {
-
     const response = await axios.get('/api/products/ratings');
-    audio.value = response.data.filter(product =>
-    {
-      const lowerName = product.name.toLowerCase();
-      return lowerName.includes('колонка') || lowerName.includes('колонки');
-    });
+    const ratingsMap = Object.fromEntries(response.data.map(p => [p.id, p]));
+    audio.value = audio.value.map(product => ({
+      ...product,
+      average_rating: ratingsMap[product.id]?.average_rating,
+      reviews_count: ratingsMap[product.id]?.reviews_count
+    }));
   } catch (error) {
     console.error('Ошибка', error);
   }

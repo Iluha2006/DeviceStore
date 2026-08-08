@@ -10,6 +10,8 @@
       />
       <router-view></router-view>
 
+      <Footer />
+
       <Authorization
         v-if="isRegisterModalOpen"
         @close="closeRegisterModal"
@@ -20,6 +22,7 @@
   <script setup>
   import { ref } from 'vue'
   import Header from './components/Header.vue'
+  import Footer from './components/Footer.vue'
   import NavbarModal from '../js/components/Modal/NavbarModal.vue'
   import Authorization from './components/Authorization.vue'
 
