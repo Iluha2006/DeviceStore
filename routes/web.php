@@ -15,8 +15,8 @@ use App\Http\Controllers\StripeCheckoutController;
 Route::post('api/login', [App\Http\Controllers\AuthController::class, 'login']);
 Route::post('api/register', [App\Http\Controllers\AuthController::class, 'register']);
 Route::post('api/logout', [App\Http\Controllers\AuthController::class, 'logout']);
-Route::prefix('api/products/{product}') ->middleware('auth:sanctum')->group(function () {
-    Route::get('/reviews', [ProductReviewController::class, 'index']);
+Route::get('api/products/{product}/reviews', [ProductReviewController::class, 'index']);
+Route::prefix('api/products/{product}')->middleware('auth:sanctum')->group(function () {
     Route::post('/reviews', [ProductReviewController::class, 'store']);
 });
 
